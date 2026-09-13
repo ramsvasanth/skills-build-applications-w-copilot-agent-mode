@@ -1,10 +1,10 @@
 import cors from 'cors'
 import express, { type ErrorRequestHandler } from 'express'
-import { connectToDatabase } from './config.js'
+import { API_PORT, connectToDatabase, getApiBaseUrl } from './config.js'
 import { apiRouter } from './routes.js'
 
 const app = express()
-const port = Number(process.env.PORT ?? 8000)
+const port = Number(process.env.PORT ?? API_PORT)
 
 app.use(cors())
 app.use(express.json())
@@ -25,7 +25,7 @@ app.use(errorHandler)
 async function startServer(): Promise<void> {
   await connectToDatabase()
   app.listen(port, () => {
-    console.log(`OctoFit API listening on port ${port}`)
+    console.log(`OctoFit API listening at ${getApiBaseUrl()}`)
   })
 }
 
